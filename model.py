@@ -28,12 +28,24 @@ class Movie(db.Model):
     release_date = db.Column(db.DateTime)
     poster_path = db.Column(db.String)
 
-    def __repr__(self)
+    def __repr__(self):
         """Show info about the movie."""
 
         return f'<Movie id = {self.movie_id} title = {self.title}'
 
+class Rating(db.Model):
+    """A rating."""
+    __tablename__ = "ratings"
 
+    rating_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
+    score = db.Column(db.Integer, nullable = False)
+    movie_id = db.Column(db.Integer, db.ForeignKey('movies.movie_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+
+    def __repr__(self):
+        """Show info about the rating."""
+
+        return f'<Rating id = {self.rating_id} score = {self.score}'
 
 def connect_to_db(flask_app, db_uri='postgresql:///ratings', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
