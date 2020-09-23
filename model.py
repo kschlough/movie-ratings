@@ -9,9 +9,11 @@ class User(db.Model):
     """A user."""
     __tablename__ = "users"
 
-    user_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
-    email = db.Column(db.String, nullable = False, unique = True)
-    password = db.Column(db.String, nullable = False)
+    user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    email = db.Column(db.String, nullable=False, unique=True)
+    password = db.Column(db.String, nullable=False)
+
+    rating = db.relationship('Rating')
     
     def __repr__(self):
         """Show info about the user."""
@@ -22,11 +24,13 @@ class Movie(db.Model):
     """A movie."""
     __tablename__ = "movies"
 
-    movie_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
-    title = db.Column(db.String, nullable = False)
+    movie_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    title = db.Column(db.String, nullable=False)
     overview = db.Column(db.Text)
     release_date = db.Column(db.DateTime)
     poster_path = db.Column(db.String)
+
+    rating = db.relationship('Rating')
 
     def __repr__(self):
         """Show info about the movie."""
@@ -37,10 +41,13 @@ class Rating(db.Model):
     """A rating."""
     __tablename__ = "ratings"
 
-    rating_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
-    score = db.Column(db.Integer, nullable = False)
+    rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    score = db.Column(db.Integer, nullable=False)
     movie_id = db.Column(db.Integer, db.ForeignKey('movies.movie_id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+
+    movie = db.relationship('Movie')
+    user = db.relationship('User')
 
     def __repr__(self):
         """Show info about the rating."""
